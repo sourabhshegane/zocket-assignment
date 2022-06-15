@@ -19,7 +19,7 @@
         </activity>
 
         <service android:name=".ReminderNotificationService" />
-
         <receiver android:name=".broadcast_receivers.AlarmBroadcastReceiver" />
+        <receiver android:name=".broadcast_receivers.NotificationActionReceiver"/>
     </application>
 </manifest>
