@@ -23,6 +23,7 @@ public class ReminderService {
     public void scheduleReminder(@NonNull Reminder reminder) {
         // SOLUTION
         Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+        intent.putExtra("reminder_details", reminder);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, reminder.getWhen(), pendingIntent);

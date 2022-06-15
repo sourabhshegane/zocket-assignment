@@ -2,7 +2,9 @@ package com.devskiller.android.reminder;
 
 import androidx.annotation.NonNull;
 
-public class Reminder {
+import java.io.Serializable;
+
+public class Reminder implements Serializable {
     private int id;
     private String title;
     private boolean done;
