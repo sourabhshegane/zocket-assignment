@@ -26,11 +26,8 @@ public class ReminderDetailsActivity extends AppCompatActivity {
 
     private void initUI() {
 
-        activityMainBinding.btnAddReminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        activityMainBinding.btnAddReminder.setOnClickListener(v -> {
 
-            }
         });
     }
 }
