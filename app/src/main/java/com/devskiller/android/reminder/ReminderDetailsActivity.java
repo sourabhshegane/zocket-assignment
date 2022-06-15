@@ -18,13 +18,14 @@ public class ReminderDetailsActivity extends AppCompatActivity implements OnAddN
 
     private ReminderRepository repository = ReminderRepository.getInstance();
     private ActivityMainBinding activityMainBinding = null;
+    private ReminderService reminderService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         initUI();
+        reminderService = new ReminderService(this, repository);
     }
 
     private void initUI() {
@@ -36,7 +37,7 @@ public class ReminderDetailsActivity extends AppCompatActivity implements OnAddN
 
     @Override
     public void onNewReminderCreated(@NonNull Reminder reminder) {
-
+        reminderService.scheduleReminder(reminder);
     }
 
     @Override
