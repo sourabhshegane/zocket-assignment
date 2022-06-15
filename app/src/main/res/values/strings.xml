@@ -4,4 +4,6 @@
     <string name="reminder_not_found_error">Reminder not found!</string>
     <string name="title_name">Name</string>
     <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="placeholder_reminder_title">Enter Title</string>
 </resources>
