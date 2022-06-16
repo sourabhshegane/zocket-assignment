@@ -6,6 +6,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -14,6 +15,7 @@ import com.devskiller.android.reminder.broadcast_receivers.AlarmBroadcastReceive
 public class ReminderService {
     private Context context;
     private ReminderRepository reminderRepository;
+    private final String TAG = "ReminderService";
 
     public ReminderService(@NonNull Context context, @NonNull ReminderRepository reminderRepository) {
         this.context = context;
@@ -27,8 +29,8 @@ public class ReminderService {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, reminder.getWhen(), pendingIntent);
-
-       reminderRepository.save(reminder);
+        reminderRepository.save(reminder);
+        Log.d(TAG, "Scheduled a new reminder: ");
     }
 
     public void markDone(@NonNull Reminder reminder) {
