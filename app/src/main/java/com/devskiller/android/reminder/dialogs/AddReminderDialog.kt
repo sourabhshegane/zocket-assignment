@@ -1,5 +1,6 @@
 package com.devskiller.android.reminder.dialogs
 
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
@@ -135,4 +136,12 @@ class AddReminderDialog(
         false
     )
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.let {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            it.window?.setLayout(width, height)
+        }
+    }
 }
