@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.devskiller.android.reminder.broadcast_receivers.AlarmBroadcastReceiver;
 import com.devskiller.android.reminder.broadcast_receivers.NotificationActionReceiver;
 
 public class ReminderNotificationService extends IntentService {
@@ -39,8 +40,12 @@ public class ReminderNotificationService extends IntentService {
         createNotificationChannel();
 
         Intent intent = new Intent(this, ReminderDetailsActivity.class);
-        intent.putExtra("reminder", reminder);
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("reminder", reminder);
+        intent.putExtra("reminder", bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         Intent broadcastIntent = new Intent(this, NotificationActionReceiver.class);
