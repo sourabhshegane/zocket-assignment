@@ -6,11 +6,15 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.devskiller.android.reminder.broadcast_receivers.AlarmBroadcastReceiver;
+
+import java.util.Iterator;
+import java.util.Set;
 
 public class ReminderService {
     private Context context;
@@ -24,13 +28,20 @@ public class ReminderService {
 
     public void scheduleReminder(@NonNull Reminder reminder) {
         // SOLUTION
+
         Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
-        intent.putExtra("reminder_details", reminder);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, 0);
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("reminder", reminder);
+        intent.putExtra("reminder", bundle);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, Intent.FILL_IN_DATA);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, reminder.getWhen(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, reminder.getTime(), pendingIntent);
+
         reminderRepository.save(reminder);
-        Log.d(TAG, "Scheduled a new reminder: ");
+        Log.d(TAG, "Scheduled a new reminder: " + reminder);
     }
 
     public void markDone(@NonNull Reminder reminder) {
