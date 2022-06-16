@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.devskiller.android.reminder">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +22,11 @@
         </activity>
 
         <service android:name=".ReminderNotificationService" />
-        <receiver android:name=".broadcast_receivers.AlarmBroadcastReceiver" />
+        <receiver
+            android:name=".broadcast_receivers.AlarmBroadcastReceiver"
+            android:exported="true"
+            android:enabled="true">
+        </receiver>
         <receiver android:name=".broadcast_receivers.NotificationActionReceiver"/>
     </application>
 </manifest>
