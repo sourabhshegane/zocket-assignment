@@ -41,9 +41,6 @@ public class ReminderDetailsActivity extends AppCompatActivity implements OnAddN
         } else {
             Toast.makeText(getApplicationContext(), R.string.reminder_not_found_error, Toast.LENGTH_SHORT).show();
         }
-
-      /*  Reminder reminder = new Reminder(1, "MM", false, System.currentTimeMillis());
-        reminderService.scheduleReminder(reminder);*/
     }
 
     private Reminder getReminderDataFromIntent(Intent intent) {
@@ -77,16 +74,11 @@ public class ReminderDetailsActivity extends AppCompatActivity implements OnAddN
         binding.btnAddReminder.setOnClickListener(v -> {
             addReminderDialog = new AddReminderDialog(this, ReminderDetailsActivity.this);
             addReminderDialog.show(getSupportFragmentManager(), "");
-
-         /*   //TODO: Remove this hardcoded reminder
-            Reminder reminder = new Reminder(1, "MM", false, System.currentTimeMillis());
-            reminderService.scheduleReminder(reminder);*/
         });
     }
 
     @Override
     public void onNewReminderCreated(@NonNull Reminder reminder) {
-        Log.d(TAG, "onNewReminderCreated: ");
         reminderService.scheduleReminder(reminder);
         addReminderDialog.dismiss();
     }

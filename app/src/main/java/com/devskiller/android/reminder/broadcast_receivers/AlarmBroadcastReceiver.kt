@@ -25,7 +25,6 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         reminder?.let {
             val reminderNotificationService =
                 Intent(context, ReminderNotificationService::class.java)
-            Log.d(TAG, "onReceive Data is: ${reminder.title}")
             reminderNotificationService.putExtra("reminder", reminderBundle)
             context?.let {
                 Handler(Looper.getMainLooper()).post {
