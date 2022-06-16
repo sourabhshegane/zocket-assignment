@@ -30,7 +30,6 @@ public class ReminderService {
         // SOLUTION
 
         Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
-        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("reminder", reminder);
