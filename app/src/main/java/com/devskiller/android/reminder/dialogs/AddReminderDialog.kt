@@ -1,9 +1,9 @@
 package com.devskiller.android.reminder.dialogs
 
-import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +22,7 @@ class AddReminderDialog(
 
     private lateinit var binding: DialogAddNewReminderBinding
     private var selectedEpoch: Long = -1
+    private val TAG = "AddReminderDialog"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +51,7 @@ class AddReminderDialog(
 
             if (!isEnteredDataCorrect(enteredTitle)) return@setOnClickListener
 
+            Log.d(TAG, "Selected epoch is: $selectedEpoch")
             val newReminder = Reminder(
                 1,
                 enteredTitle,
@@ -59,9 +61,13 @@ class AddReminderDialog(
             onAddNewReminderDialogActions.onNewReminderCreated(newReminder)
         }
 
-        binding.button2.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             onAddNewReminderDialogActions.onCancelled()
             dismiss()
+        }
+
+        binding.edReminderTime.setOnClickListener {
+            timePicker.show()
         }
     }
 
@@ -72,11 +78,11 @@ class AddReminderDialog(
         }
 
         if (selectedEpoch == -1L) {
-            binding.editTextTime.error = "Please select time"
+            binding.edReminderTime.error = "Please select time"
             return false
         }
 
-        return false
+        return true
     }
 
     private val timePickerDialogListener: TimePickerDialog.OnTimeSetListener =
@@ -112,16 +118,16 @@ class AddReminderDialog(
                 }
             }
 
-            val calendar: Calendar = getEpochOfSelectedDate(hourOfDay, minute)
+            val calendar: Calendar = getEpochOfSelectedTime(hourOfDay, minute)
             selectedEpoch = calendar.timeInMillis
-            binding.edReminderTitle.setText(formattedTime)
+            binding.edReminderTime.setText(formattedTime)
         }
 
-    private fun getEpochOfSelectedDate(hourOfDay: Int, minute: Int): Calendar {
+    private fun getEpochOfSelectedTime(hourOfDay: Int, minute: Int): Calendar {
         val calendar: Calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, Calendar.YEAR)
-        calendar.set(Calendar.MONTH, Calendar.MONTH)
-        calendar.set(Calendar.DAY_OF_MONTH, Calendar.MONTH)
+        calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR))
+        calendar.set(Calendar.MONTH, Calendar.getInstance().get(Calendar.MONTH))
+        calendar.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)
@@ -140,7 +146,7 @@ class AddReminderDialog(
         super.onStart()
         dialog?.let {
             val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.WRAP_CONTENT
             it.window?.setLayout(width, height)
         }
     }
