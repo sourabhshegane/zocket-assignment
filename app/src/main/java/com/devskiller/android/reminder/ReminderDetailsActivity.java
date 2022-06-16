@@ -29,20 +29,23 @@ public class ReminderDetailsActivity extends AppCompatActivity implements OnAddN
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initUI();
-        reminderService = new ReminderService(this, repository);
-        if(isDataAvailableInIntent(getIntent())){
+        reminderService = new ReminderService(getApplicationContext(), repository);
+
+        if (isDataAvailableInIntent(getIntent())) {
             Reminder reminder = getReminderDataFromIntent(getIntent());
             populateFieldsWithData(reminder);
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), R.string.reminder_not_found_error, Toast.LENGTH_SHORT).show();
         }
 
-        Reminder reminder = new Reminder(1, "MM", false, System.currentTimeMillis());
-        reminderService.scheduleReminder(reminder);
+      /*  Reminder reminder = new Reminder(1, "MM", false, System.currentTimeMillis());
+        reminderService.scheduleReminder(reminder);*/
     }
 
     private Reminder getReminderDataFromIntent(Intent intent) {
-        return (Reminder) intent.getSerializableExtra("reminder");
+        Bundle reminderBundle = intent.getParcelableExtra("reminder");
+        Reminder reminder = (Reminder) reminderBundle.getSerializable("reminder");
+        return reminder;
     }
 
     private boolean isDataAvailableInIntent(Intent intent) {
@@ -68,12 +71,12 @@ public class ReminderDetailsActivity extends AppCompatActivity implements OnAddN
         binding.cbReminderDone.setEnabled(false);
 
         binding.btnAddReminder.setOnClickListener(v -> {
-            /*addReminderDialog = new AddReminderDialog(this, ReminderDetailsActivity.this);
-            addReminderDialog.show(getSupportFragmentManager(), "");*/
+            addReminderDialog = new AddReminderDialog(this, ReminderDetailsActivity.this);
+            addReminderDialog.show(getSupportFragmentManager(), "");
 
-            //TODO: Remove this hardcoded reminder
+         /*   //TODO: Remove this hardcoded reminder
             Reminder reminder = new Reminder(1, "MM", false, System.currentTimeMillis());
-            reminderService.scheduleReminder(reminder);
+            reminderService.scheduleReminder(reminder);*/
         });
     }
 
@@ -88,4 +91,5 @@ public class ReminderDetailsActivity extends AppCompatActivity implements OnAddN
     public void onCancelled() {
         Log.d(TAG, "onCancelled:");
     }
+
 }
