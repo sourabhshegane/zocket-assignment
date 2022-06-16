@@ -66,7 +66,7 @@ public class ReminderNotificationService extends IntentService {
                 .setContentText(reminder.getTitle())
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(false)
-                .addAction(R.mipmap.ic_launcher, getString(R.string.mark_completed), actionIntent)
+                .addAction(R.mipmap.ic_launcher, getString(R.string.done), actionIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
 
