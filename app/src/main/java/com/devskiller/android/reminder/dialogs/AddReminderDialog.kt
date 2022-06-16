@@ -54,8 +54,8 @@ class AddReminderDialog(
             Log.d(TAG, "Selected epoch is: $selectedEpoch")
             val newReminder = Reminder(
                 1,
-                enteredTitle,
-                selectedEpoch
+                title = enteredTitle,
+                time = selectedEpoch
             )
 
             onAddNewReminderDialogActions.onNewReminderCreated(newReminder)
