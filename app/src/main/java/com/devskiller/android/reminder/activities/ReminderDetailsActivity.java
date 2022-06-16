@@ -1,4 +1,4 @@
-package com.devskiller.android.reminder;
+package com.devskiller.android.reminder.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.devskiller.android.reminder.R;
+import com.devskiller.android.reminder.Reminder;
+import com.devskiller.android.reminder.ReminderRepository;
+import com.devskiller.android.reminder.ReminderService;
 import com.devskiller.android.reminder.callbacks.OnAddNewReminderDialogActions;
 import com.devskiller.android.reminder.databinding.ActivityMainBinding;
 import com.devskiller.android.reminder.dialogs.AddReminderDialog;

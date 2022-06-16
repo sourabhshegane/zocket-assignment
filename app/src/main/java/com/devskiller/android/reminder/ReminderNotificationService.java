@@ -12,9 +12,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
+import com.devskiller.android.reminder.activities.ReminderDetailsActivity;
 import com.devskiller.android.reminder.broadcast_receivers.NotificationActionReceiver;
+import com.devskiller.android.reminder.utils.NotificationUtils;
 
 public class ReminderNotificationService extends IntentService {
 
@@ -32,6 +33,7 @@ public class ReminderNotificationService extends IntentService {
         if(reminder != null){
             startForeground(12, createNewNotification(reminder));
         }else{
+            stopForeground(true);
             Log.d(TAG, "onHandleIntent: Reminder is null");
         }
     }
@@ -58,13 +60,13 @@ public class ReminderNotificationService extends IntentService {
                 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "ZOCKET_REMINDER_SERVICE")
-                .setSmallIcon(R.drawable.abc_vector_test)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_time)
                 .setContentTitle(reminder.getTitle())
                 .setContentText(reminder.getTitle())
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .addAction(R.mipmap.ic_launcher, "Mark as Done", actionIntent)
+                .setAutoCancel(false)
+                .addAction(R.mipmap.ic_launcher, getString(R.string.mark_completed), actionIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
 
@@ -74,9 +76,9 @@ public class ReminderNotificationService extends IntentService {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("ZOCKET_REMINDER_SERVICE", "ZRS", importance);
-            channel.setDescription("ZOCKET_REMINDER_SERVICE");
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(NotificationUtils.NOTIFICATION_CHANNEL_ID, NotificationUtils.NOTIFICATION_CHANNEL_NAME, importance);
+            channel.setDescription(NotificationUtils.NOTIFICATION_CHANNEL_DESCRIPTION);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }

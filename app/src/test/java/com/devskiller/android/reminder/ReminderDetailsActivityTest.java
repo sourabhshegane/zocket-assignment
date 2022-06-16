@@ -1,12 +1,12 @@
 package com.devskiller.android.reminder;
 
 import android.content.Intent;
-import android.os.Build;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.devskiller.android.reminder.activities.ReminderDetailsActivity;
 import com.devskiller.android.reminder.test.ShadowReminderRepository;
 import com.devskiller.android.reminder.test.TestReminders;
 
@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowToast;
 
