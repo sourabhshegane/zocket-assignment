@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.devskiller.android.reminder.broadcast_receivers.AlarmBroadcastReceiver;
 import com.devskiller.android.reminder.broadcast_receivers.NotificationActionReceiver;
 
 public class ReminderNotificationService extends IntentService {
@@ -27,16 +26,17 @@ public class ReminderNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+
         Bundle reminderBundle = intent.getParcelableExtra("reminder");
         Reminder reminder = (Reminder) reminderBundle.getSerializable("reminder");
         if(reminder != null){
-            createNewNotification(reminder);
+            startForeground(12, createNewNotification(reminder));
         }else{
             Log.d(TAG, "onHandleIntent: Reminder is null");
         }
     }
 
-    private void createNewNotification(Reminder reminder) {
+    private Notification createNewNotification(Reminder reminder) {
         Log.d(TAG, "Creating new notification for " + reminder.getTitle());
         createNotificationChannel();
 
@@ -69,9 +69,7 @@ public class ReminderNotificationService extends IntentService {
 
 
         Log.d(TAG, "Firing new notification...");
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(reminder.getId(), builder.build());
-
+        return builder.build();
     }
 
     private void createNotificationChannel() {
