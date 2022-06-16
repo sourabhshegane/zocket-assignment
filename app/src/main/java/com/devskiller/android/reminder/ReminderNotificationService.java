@@ -57,7 +57,7 @@ public class ReminderNotificationService extends IntentService {
         Intent broadcastIntent = new Intent(this, NotificationActionReceiver.class);
         broadcastIntent.putExtra("reminder", bundle);
         PendingIntent actionIntent = PendingIntent.getBroadcast(this,
-                0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                reminder.getId(), broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.NOTIFICATION_CHANNEL_ID)

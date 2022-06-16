@@ -35,7 +35,7 @@ public class ReminderService {
         bundle.putSerializable("reminder", reminder);
         intent.putExtra("reminder", bundle);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, Intent.FILL_IN_DATA);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, reminder.getTime(), pendingIntent);
 
