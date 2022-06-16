@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.devskiller.android.reminder.Reminder
 import com.devskiller.android.reminder.ReminderNotificationService
 
@@ -22,7 +24,9 @@ class AlarmBroadcastReceiver: BroadcastReceiver() {
             val reminderNotificationService = Intent(context, ReminderNotificationService::class.java)
             Log.d(TAG, "onReceive Data is: ${reminder.title}")
             reminderNotificationService.putExtra("reminder", reminderBundle)
-            context?.startService(reminderNotificationService)
+            context?.let {
+                ContextCompat.startForegroundService(context, reminderNotificationService)
+            }
         }
     }
 }
