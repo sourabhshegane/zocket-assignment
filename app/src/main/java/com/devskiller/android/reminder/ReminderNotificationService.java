@@ -1,6 +1,7 @@
 package com.devskiller.android.reminder;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -36,20 +37,23 @@ public class ReminderNotificationService extends IntentService {
     }
 
     private void createNewNotification(Reminder reminder) {
-        Log.d(TAG, "Creating new notification");
+        Log.d(TAG, "Creating new notification for " + reminder.getTitle());
         createNotificationChannel();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("reminder", reminder);
 
         Intent intent = new Intent(this, ReminderDetailsActivity.class);
         intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("reminder", reminder);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.putExtra("reminder", bundle);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent broadcastIntent = new Intent(this, NotificationActionReceiver.class);
-        broadcastIntent.putExtra("reminder", reminder);
+        broadcastIntent.putExtra("reminder", bundle);
         PendingIntent actionIntent = PendingIntent.getBroadcast(this,
                 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -59,8 +63,9 @@ public class ReminderNotificationService extends IntentService {
                 .setContentTitle(reminder.getTitle())
                 .setContentText(reminder.getTitle())
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .addAction(R.mipmap.ic_launcher, "Mark as Done", actionIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
 
 
         Log.d(TAG, "Firing new notification...");
